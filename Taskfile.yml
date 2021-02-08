@@ -9,8 +9,8 @@ vars:
   # or any other packer options you need to pass into commands
   packer_args: '-var-file="./config.json"'
 
-  iso_name: ubuntu-20.04.2-live-server-arm64.iso
-  iso_url: http://cdimage.ubuntu.com/releases/20.04/release/ubuntu-20.04.2-live-server-arm64.iso
+  iso_name: ubuntu-20.04.2-live-server-amd64.iso
+  iso_url: https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-live-server-amd64.iso
 
 tasks:
   init:
@@ -31,7 +31,7 @@ tasks:
     cmds:
       - rm -rf ./isos
 
-  ubuntu-18-iso:
+  ubuntu-iso:
     cmds:
       - mkdir -p ./isos
       - curl -C - -o ./isos/{{.iso_name}} {{.iso_url}}

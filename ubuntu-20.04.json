@@ -10,13 +10,8 @@
 			"vm_name": "{{user `template_name`}}",
 			"vm_id": "{{ user `vmid` }}",
 			"node": "{{user `proxmox_node_name`}}",
-			"cores": "{{ user `cores` }}",
-			"sockets": "{{ user `sockets` }}",
-			"memory": "{{ user `memory` }}",
-			"os": "l26",
 			"network_adapters": [
 				{
-					"model": "virtio",
 					"bridge": "vmbr0"
 				}
 			],
@@ -25,9 +20,7 @@
 					"type": "scsi",
 					"disk_size": "{{ user `disk_size`}}",
 					"storage_pool": "{{user `datastore`}}",
-					"storage_pool_type": "{{user `datastore_type`}}",
-					"format": "raw",
-					"cache_mode": "writeback"
+					"storage_pool_type": "{{user `datastore_type`}}"
 				}
 			],
 
@@ -44,26 +37,22 @@
 
 			"boot_wait": "10s",
 			"boot_command": [
-				"{{ user `boot_command_prefix` }}",
-				"/install/vmlinuz ",
-				"auto ",
-				"console-setup/ask_detect=false ",
-				"debconf/frontend=noninteractive ",
-				"debian-installer={{ user `locale` }} ",
-				"hostname={{ user `hostname` }} ",
-				"fb=false ",
-				"grub-installer/bootdev=/dev/sda<wait> ",
-				"initrd=/install/initrd.gz ",
-				"kbd-chooser/method=us ",
-				"keyboard-configuration/modelcode=SKIP ",
-				"locale={{ user `locale` }} ",
-				"noapic ",
-				"passwd/username={{ user `ssh_username` }} ",
-				"passwd/user-fullname={{ user `ssh_fullname` }} ",
-				"passwd/user-password={{ user `ssh_password` }} ",
-				"passwd/user-password-again={{ user `ssh_password` }} ",
-				"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `preseed_file` }} ",
-				"-- <enter>"
+        " <wait><enter><wait>",
+        "<f6><esc>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs>",
+        "/casper/vmlinuz ",
+        "initrd=/casper/initrd ",
+        "autoinstall ",
+        "ds=nocloud-net;s=http://{{.HTTPIP}}:{{.HTTPPort}}/http/ ",
+        "<enter>"
 			]
 		}
 	],
@@ -77,9 +66,8 @@
 				"sudo apt-get update",
 				"sudo apt-get -y upgrade",
 				"sudo apt-get -y dist-upgrade",
-				"sudo apt-get -y install linux-generic linux-headers-generic linux-image-generic",
 				"sudo apt-get -y install qemu-guest-agent cloud-init",
-				"sudo apt-get -y install procps iputils-ping telnet netcat mc wget curl dnsutils iproute2 vim tcpdump",
+				"sudo apt-get -y install procps wget curl dnsutils iproute2 vim tcpdump python3",
 				"exit 0"
 			]
 		}
